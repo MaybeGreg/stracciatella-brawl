@@ -7,3 +7,4 @@ op blt- 0x34	   @ $8018CFC8
 
 .include Source/Community/Engine.asm
 .include KJP.txt
+.include REX.txt
