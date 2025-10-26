@@ -331,6 +331,7 @@ buryNormal:
 
 .include Source/KingJigglyPuff/Project+/Articles.asm
 !.include Source/KingJigglyPuff/Project+/CodeMenu.asm
+.include Source/Community/Project+/Memory.asm
 .include Source/KingJigglyPuff/Project+/CompressPAC.asm
 .include Source/KingJigglyPuff/Project+/FilePatchCode.asm
 .include Source/KingJigglyPuff/P+Ex/WaveIDIntercept.asm
