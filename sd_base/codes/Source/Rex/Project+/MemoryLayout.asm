@@ -1,8 +1,8 @@
-# #################################################################################
-# Memory Extension for FighterXResource1 [Dantarion, ASF1nk, DukeItOut, Exul Anima]
-# #
-# # 5.33MB -> 5.57MB
-# #################################################################################
+#################################################################################
+!Memory Extension for FighterXResource1 [Dantarion, ASF1nk, DukeItOut, Exul Anima]
+#
+# 5.33MB -> 5.57MB
+#################################################################################
 # int 0x5ABDC0 @ $80421B44
 # int 0x5ABDC0 @ $80421B64
 # int 0x5ABDC0 @ $80421B84
@@ -13,11 +13,21 @@
 # int 0x5ABDC0 @ $80421ECC
 # #int 0x592000 @ $80421ECC	Original line for reference.
 
-# ##############################################################
-# Memory Extension for FighterXResource2 [Dantarion, Exul Anima]
-# #
-# # 0.53MB -> 0.62MB
-# ##############################################################
+#  P+ version
+int 0x592000 @ $80421B44
+int 0x592000 @ $80421B64
+int 0x592000 @ $80421B84
+int 0x592000 @ $80421BA4
+int 0x592000 @ $80421E0C
+int 0x592000 @ $80421E2C
+int 0x592000 @ $80421EAC
+int 0x592000 @ $80421ECC
+
+##############################################################
+Memory Extension for FighterXResource2 [Dantarion, Exul Anima]
+#
+# 0.53MB -> 0.62MB
+##############################################################
 # int 0x9E680 @ $80421B54
 # int 0x9E680 @ $80421B74
 # int 0x9E680 @ $80421B94
@@ -26,6 +36,16 @@
 # int 0x9E680 @ $80421E3C
 # int 0x9E680 @ $80421EBC
 # int 0x9E680 @ $80421EDC
+
+#  P+ version
+int 0x91E80 @ $80421B54
+int 0x91E80 @ $80421B74
+int 0x91E80 @ $80421B94
+int 0x91E80 @ $80421BB4
+int 0x91E80 @ $80421E1C
+int 0x91E80 @ $80421E3C
+int 0x91E80 @ $80421EBC
+int 0x91E80 @ $80421EDC
 
 #########################################
 !Stage Resource 6.4MB -> 6.1MB [DukeItOut]
@@ -41,8 +61,8 @@ int 0x666700 @ $80422334
 !Memory Extension for CSS/SSS MenuResource (+0.58MB) [DukeItOut]
 ################################################################
 /* Not used in REX as this will be managed separately for the CSS rules menu until modern RSP loading is integrated. */
-int 0x73EA00 @ $80422384 #+0.88MB version. Disabled for now so characters can take advanage of an extra 0.3MB due to the above code
-#int 0X6F1CA0 @ $80422384  #+0.58MB version. Keep this size synchronized with the Stage Resource change! (i.e. if Stage Resource = 6.4MB, this can be made +0.88)
+#int 0x73EA00 @ $80422384 #+0.88MB version. Disabled for now so characters can take advanage of an extra 0.3MB due to the above code
+int 0X6F1CA0 @ $80422384  #+0.58MB version. Keep this size synchronized with the Stage Resource change! (i.e. if Stage Resource = 6.4MB, this can be made +0.88)
 
 ###########################################
 !Network Resource 1.4MB -> 1.1MB [DukeItOut]
@@ -54,12 +74,14 @@ int 0x119B00 @ $804218AC
 ################################################
 MeleeFont Resource 0.45MB -> 0.33MB [Exul Anima]
 ################################################
+# Using this will remove a lot of important text unless you get a smaller font from Common3.pac / Misc Data [10].
+# Also helpful to use the Remix/Tags.asm to increse the size of text. Removes the hira font from memory (Classic brawl tag font)
 int 0x53400 @ $8042193C
 
-# #################################################
-# !InfoExtraResource 13.90MB -> 14.90MB [Exul Anima]
-# #################################################
-# int 0xEE6700 @ $80422214	# Used to prepare the Sound Test soundtrack and SFX lists for (future) expansion. It might not end up being strictly necessary but better safe than sorry.
+#################################################
+!InfoExtraResource 13.90MB -> 14.90MB [Exul Anima]
+#################################################
+int 0xEE6700 @ $80422214	# Used to prepare the Sound Test soundtrack and SFX lists for (future) expansion. It might not end up being strictly necessary but better safe than sorry.
 
 #########################################################
 Sound Resource 12.76MB -> 12.76MB [DukeItOut, Exul Anima]
@@ -103,32 +125,32 @@ Finish:
 	li r3, 196				# Original operation. Allocation size.
 }
 
-# #####################################################
-# Sound Resource sndHeap[0] 2.91MB -> 4.41MB [MarioDox]
-# #####################################################
-# # Requires SoundResource increase above. Used for the expanded announcer.
-# op lis r29,0x43 	@ $80079f70
-# op addi r4,r29,0x4cfa 	@ $80079f78
-# op addi r5,r29,0x4cfa	@ $80079f98
+#####################################################
+Sound Resource sndHeap[0] 2.91MB -> 4.41MB [MarioDox]
+#####################################################
+# Requires SoundResource increase above. Used for the expanded announcer.
+op lis r29,0x43 	@ $80079f70
+op addi r4,r29,0x4cfa 	@ $80079f78
+op addi r5,r29,0x4cfa	@ $80079f98
 
-# #######################################################
-# !Decrease GlobalMode and MenuResource Heaps [Exul Anima]
-# #######################################################
+#######################################################
+!Decrease GlobalMode and MenuResource Heaps [Exul Anima]
+#######################################################
 
-# #word 0x00026F00 @ $804218DC		# Reduce GlobalMode by 80KB. This fucked up saving to NAND so don't enable this.
-# #word 0x00710000 @ $80422384		# Reduce MenuResource by 100KB. Will be reduced by more once modern RSP loading is integrated. This is actually modified in bx_fighter.rel, might change that.
-# #word 0x00146B00 @ $80421BC4		# (No longer needed) Increase FighterTechniq by 180KB. Increasing this won't be necessary once modern RSP loading is integrated, and the RAM can be used elsewhere.
+#word 0x00026F00 @ $804218DC		# Reduce GlobalMode by 80KB. This fucked up saving to NAND so don't enable this.
+#word 0x00710000 @ $80422384		# Reduce MenuResource by 100KB. Will be reduced by more once modern RSP loading is integrated. This is actually modified in bx_fighter.rel, might change that.
+#word 0x00146B00 @ $80421BC4		# (No longer needed) Increase FighterTechniq by 180KB. Increasing this won't be necessary once modern RSP loading is integrated, and the RAM can be used elsewhere.
 
-# 	## NOTE:
-# 	## This code was originally required to get around some jank involving the rules menu on the CSS.
-# 	## Now that the CSS is loaded via its own scene instead of adding onto the CSS, this code has been adjusted and now powers additional expansion for the FighterXResource1 heaps.
-# 	## The original note is left in for archival purposes.
+	## NOTE:
+	## This code was originally required to get around some jank involving the rules menu on the CSS.
+	## Now that the CSS is loaded via its own scene instead of adding onto the CSS, this code has been adjusted and now powers additional expansion for the FighterXResource1 heaps.
+	## The original note is left in for archival purposes.
 
-# 	## !!!OUTDATED!!! NOTE:
-# 	## There is code hamfisted into Section[5] of sora_menu_sel_char.rel (affectionately called the tumor code) that (among other things) relocates loading the CSS rules menu to a different heap than the MenuResource heap in vBrawl.
-# 	## Previously this allocated the rules menu to the Network heap during the CSS.
-# 	## Now this will be allocated to FighterTechniq, increased to accommodate the rules menu's 1.3MB allocation. (WHY DOES IT ALLOCATE SO MUCH???)
-# 	## Once modern asyncrhonous RSP loading is integrated into REX, then we can do away with this tumor code and relocate the CSS rules menu to the MenuResource heap, which will be significantly freed up due to RSP loading.
+	## !!!OUTDATED!!! NOTE:
+	## There is code hamfisted into Section[5] of sora_menu_sel_char.rel (affectionately called the tumor code) that (among other things) relocates loading the CSS rules menu to a different heap than the MenuResource heap in vBrawl.
+	## Previously this allocated the rules menu to the Network heap during the CSS.
+	## Now this will be allocated to FighterTechniq, increased to accommodate the rules menu's 1.3MB allocation. (WHY DOES IT ALLOCATE SO MUCH???)
+	## Once modern asyncrhonous RSP loading is integrated into REX, then we can do away with this tumor code and relocate the CSS rules menu to the MenuResource heap, which will be significantly freed up due to RSP loading.
 	
 ######################################
 Reduce FighterEffect Heap [Exul Anima]

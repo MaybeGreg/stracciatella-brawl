@@ -17,4 +17,5 @@
 # Enjoy your custom Brawl!!												   #
 ############################################################################
 
-.include source/Remix/Tags.asm
+.include source/Rex/Remix/Tags.asm
+.include source/Rex/Remix/Rules.asm
