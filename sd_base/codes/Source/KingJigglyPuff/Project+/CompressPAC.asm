@@ -33,7 +33,7 @@ Character Costumes are decompressed in the Network Heap [Kapedani, DukeItOut]
 # This avoids a conflict where final smashes and compressed costumes
 # attempted to use the same memory allocation, causing crashes.
 #############################################################################
-op li r9, 6 @ $8084FE2C
+#op li r9, 6 @ $8084FE2C # Not needed since we're using FighterXResource heap decompression.
 # The following gets rid of the pause/endgame buffer
 # The game can allocate a new one when it needs to. 
 HOOK @ $8084FDB8			

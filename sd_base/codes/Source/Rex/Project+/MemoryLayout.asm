@@ -1,5 +1,5 @@
 #################################################################################
-!Memory Extension for FighterXResource1 [Dantarion, ASF1nk, DukeItOut, Exul Anima]
+Memory Extension for FighterXResource1 [Dantarion, ASF1nk, DukeItOut, Exul Anima]
 #
 # This code requires Syriinge to be running in order to clear memory
 # It also requires a very small sc_selcharacter.pac, so best remove all CSPs

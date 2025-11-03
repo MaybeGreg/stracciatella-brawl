@@ -1,3 +1,9 @@
+#######################################################
+Reduce InfoInstance in SSE v2 [Sammi Husky, Kapedani]
+######################################################
+word 0x12B440 @ $80421f9c
+word 0x12B440 @ $8042204C # Great Maze save room
+
 #################################################
 Don't clear memory on game launch [Sammi Husky]
 #################################################
@@ -49,9 +55,71 @@ HOOK @ $800272b8
 
 
 
-########################################
-Syringe Core Loader [Sammi Husky]
-########################################
+#############################################
+Syringe Core Loader [Sammi Husky, Exul Anima]
+#############################################
+
+#######################
+# Create Syringe heap #
+#######################
+HOOK @ $800244E4
+{
+    ## NOTE:
+    ## This build has reduced the size of MeleeFont to make room for Syringe
+    ## in the now freed space. The reason why the Syringe heap isn't just at the end is to prevent
+    ## any internal shifts of the memory map that could compromise hardcoded patches we may not know about.
+
+    ## NOTE:
+    ## Tmp always comes before MeleeFont, so we squeeze in Syringe between 
+    ## the two if Tmp is about to be allocated.
+
+    lwz r3, 0x4(r30)    # \ If Tmp heap is about to be allocated, allocate Syringe before it.
+    cmplwi r3, 0xC      # /
+    bne _end            # Otherwise skip to end.
+    
+    # simple stack frame
+    stwu r1, -0xa0(r1)
+    mflr r0
+    stw r0, 0xa4(r1)
+    stmw r3, 0x20(r1)   # store all our registers on the stack
+    bl _main            # branch to our main code, this puts data section addr in LR
+
+    #############################
+    # pseudo data section
+    #############################
+    word 0x20800    # Syringe heap size
+    
+    word 0x53797269 # "Syriinge"
+    word 0x696E6765
+    word 0x00000000
+    #############################
+
+_main:
+    mflr r31
+
+_createHeap:
+    li r3, 0x3C         # heap ID 60
+    addi r4, r31, 0x4   # "Syriinge"
+    lis r5, 0x0         # heap in MEM1 (arena 0)
+    lwz r6, 0x0(r31)    # heap size
+    lis r12, 0x8002
+    ori r12, r12, 0x4544
+    mtctr r12
+    bctrl   # createHeap/[gfHeapManager]
+
+    # clean up our stack frame
+    lmw r3, 0x20(r1)
+    lwz r0, 0xa4(r1)
+    mtlr r0
+    addi r1, r1, 0xa0
+
+_end:
+    lwz r4, 0x0(r30)    # Original instruction.
+}
+
+#####################
+# Load Syringe core #
+#####################
 HOOK @ $800180a0
 {
     # simple stack frame
@@ -64,14 +132,6 @@ HOOK @ $800180a0
     #############################
     # pseudo data section
     #############################
-    word 0x817ba5a0 # Syringe heap start addr
-    word 0x79b00    # \ 					    # Normally 99B00 in vBrawl
-    word 0x4Cb900   # | Menu Instance sizes	    # Normally 4EB90 in vBrawl
-    word 0x393400   # /						    # Normally 3B3400 in vBrawl
-    
-    word 0x53797269 # "Syringe"
-    word 0x6E676500
-    
     word 0x6476643A # "dvd:/module/sy_core.rel"
     word 0x2F6D6F64
     word 0x756C652F
@@ -82,35 +142,7 @@ HOOK @ $800180a0
 
 _main:
     mflr r31
-    
-    lswi r3, r31, 16 # loads our data into r3-r6
 
-    # Uncomment the below if using BrawlEx
-    lis r0, 1       # \
-    sub r3, r3, r0  # | If brawlex is present, our heap start will
-    sub r4, r4, r0  # | need to be 0x10000 earlier and menu instance
-    sub r5, r5, r0  # | needs to be reduced by the same amount.
-    sub r6, r6, r0  # /
-
-_storeSize:
-    lis r7, 0x8042
-    stw r4, 0x1D84(r7) # \
-    stw r5, 0x2254(r7) # | Write our menuInstance size patches
-    stw r6, 0x2394(r7) # /
-
-_createHeap:
-    lis r4, 1
-    addi r5, r31, 0x10 # "Syringe"
-    lis r6, 0x8049
-    ori r6, r6, 0x4D18
-    stw r5, 0(r6)
-    stw r3, 4(r6)
-    stw r4, 8(r6)
-    lis r12, 0x8002
-    ori r12, r12, 0x59A4
-    mtctr r12
-    bctrl # create/[gfMemoryPool]
-    
 _loadModule:
     li r6, 0            # \ Zero out space on the stack for 
     stw r6, 0x8(r1)     # / gfFileIOHandle object
@@ -119,7 +151,7 @@ _loadModule:
     # gfFileIOHandle::read
     # ---------------------- #
     addi r3, r1, 0x8    # our gfFileIOHandle pointer
-    addi r4, r31, 0x18  # "dvd:/module/sy_core.rel"
+    addi r4, r31, 0x0   # "dvd:/module/sy_core.rel"
     li r5, 0x3c         # Syringe heap id
     lis r12, 0x8002
     ori r12, r12, 0x19e0

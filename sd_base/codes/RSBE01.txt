@@ -22,6 +22,7 @@
 .include Source/KingJigglyPuff/P+Ex/Hooktype.asm
 
 .include Source/Rex/Extras/USBGecko.asm
+.include Source/Rex/Remix/RAM-EX.asm
 .include Source/Rex/Project+/MemoryLayout.asm
 
 ######################################################
