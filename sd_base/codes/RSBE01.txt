@@ -308,13 +308,13 @@ buryNormal:
 .include  Source/KingJigglyPuff/ProjectM/CloneEngine.asm
 .include  Source/KingJigglyPuff/ProjectM/CustomAI.asm
 
-!.include Source/KingJigglyPuff/ProjectM/SpecialModes/Rules.asm
+#.include Source/KingJigglyPuff/ProjectM/SpecialModes/Rules.asm
 
 .include Source/KingJigglyPuff/LegacyTE/ASLHelper.asm
 .include Source/KingJigglyPuff/LegacyTE/UnboundedTeamEngine.asm
 
 .include Source/KingJigglyPuff/Project+/Articles.asm
-!.include Source/KingJigglyPuff/Project+/CodeMenu.asm
+#.include Source/KingJigglyPuff/Project+/CodeMenu.asm
 .include Source/Community/Project+/Memory.asm
 .include Source/KingJigglyPuff/Project+/CompressPAC.asm
 .include Source/KingJigglyPuff/Project+/FilePatchCode.asm
@@ -756,5 +756,7 @@ Snake's U-Smash can Have Horizontal Velocity [Magus]
 
 .include Source/KingJigglyPuff/Project+/EffectCommands.asm
 .include Source/KingJigglyPuff/Project+/Attributes.asm
+
+.include Source/Community/Community/Syringe.asm
 
 .include BOOST.txt

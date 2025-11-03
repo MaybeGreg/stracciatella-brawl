@@ -61,7 +61,7 @@ File Patch Code REDUX v0.95 [Sammi Husky]
 .RESET
 * 225664EC 00000000 # only execute if value at 0x805664EC != 0x0 (sd mounted)
 
-string    "/private/wii/app/rsbe/"                          @ $80406920 # Sets path used for SD lookups / reads
+string    "/private/wii/app/rsbe/"              @ $80406920 # Sets path used for SD lookups / reads
 string    "pf"                                  @ $80507b70
 string    "SDStreamOpen (slot:%d): %s"          @ $80507b80
 uint8_t   0xA                                   @ $80507b9a
@@ -647,9 +647,9 @@ op  blr  @ $8001eb94
 
 .include Source/KingJigglyPuff/P+Ex/ReplacementSoundbankEngine.asm
 
-########################
-SDHC Extension 1.1[Bero]
-########################
+####################################
+SDHC/SDXC Extension 2.0 [Bero, Jako]
+####################################
 .macro LoadAddress(<arg1>,<arg2>)	// Simple register address load math
 {
 	.alias temp_Hi = <arg2> / 0x10000 
@@ -680,11 +680,24 @@ HOOK @ $803EEE18
   lwz r3, 0x14(r1)
   rlwinm. r3, r3, 0, 9, 9
   beq- loc_0x30
+  lhz r3, 0xE(r1)
+  rlwinm r3, r3, 16, 10, 15
+  lhz r0, 0x10(r1)
+  or r3, r3, r0
+  cmplwi r3, 0xFFFF
   li r0, 0x9
   lwz r3, 0xC(r1)
   rlwinm r3, r3, 24, 16, 31
   addi r3, r3, 0x1
-  mulli r6, r3, 0x400
+  bgt- sdxc
+  b sdhc
+sdxc:
+  mulli r6, r3, 0x4000  # | Now supports FAT32-formatted SDXC cards! They use sector size(?) of 0x4000
+  b done
+sdhc:
+  mulli r6, r3, 0x400 # | SDHC cards use sector size(?) of 0x400
+  b done
+done:
   %MakeJump(r3,0x803EEE58) # | Jump to address 803EEE58 instead of going to 803EEE1C
 loc_0x30:
   lwz r5, 0xC(r1)
@@ -767,4 +780,109 @@ HOOK @ $803EE0BC
   %LoadAddress(r3,0x805A9350)
   stw r0, 0(r3)
   lis r3, 0x805A
+}
+
+
+###############################
+checkModSDFile [DukeItOut] 
+#
+# Gives an easy way to check
+# if a file is in the SD card
+# for the mod WITHOUT checking 
+# first if it is on the DVD. 
+#
+# r3 returns 0 if FOUND
+# NOT if FALSE
+###############################
+HOOK @ $8001F598
+{
+	addi r1, r1, 0xA0		# Make room for the following hook
+	blr
+}
+HOOK @ $8001F59C			# call this function
+{
+	stwu r1, -0x100(r1)
+	mflr r0
+	stw r0, 0x104(r1)
+	mr r7, r3				# string of file requested
+	addi r3, r1, 0x20
+	lis r4, 0x8048			# \ %s%s%s
+	ori r4, r4, 0xEFF6      # /
+	lis r5, 0x8040			# \ mod name folder
+	ori r5, r5, 0x6920		# / 
+	lis r6, 0x8050			# \ pf
+	ori r6, r6, 0x7B70		# /
+	
+	lis r12, 0x803F			# \
+	ori r12, r12, 0x89FC	# | sprintf
+	mtctr r12				# |
+	bctrl 					# /		
+	addi r3, r1, 0x20
+	stw r3, 0xC(r1)
+	addi r3, r1, 0x0C
+	lis r12, 0x8001			# \ 
+	ori r12, r12, 0xF5A0	# | checkFileSD
+	mtctr r12				# |
+	bctrl					# /
+	lwz r0, 0x104(r1)
+	mtlr r0
+	addi r1, r1, 0x100
+	blr
+}
+
+##########################################################
+Store Heap Level for Common Sawnds [Sammi Husky, Kapedani]
+##########################################################
+
+.alias SOUND_GROUP_0D6_HEAP_LEVEL_ADDR = 0x80B52550
+.alias SOUND_GROUP_000_HEAP_LEVEL_ADDR = 0x80B52554 
+.alias SOUND_GROUP_0D5_HEAP_LEVEL_ADDR = 0x80B52558 
+.alias SOUND_GROUP_0D7_HEAP_LEVEL_ADDR = 0x80B5255C 
+.alias SOUND_GROUP_0D8_HEAP_LEVEL_ADDR = 0x80B52560 
+.alias SOUND_GROUP_027_HEAP_LEVEL_ADDR = 0x80B52564
+
+.macro swd(<storeReg>, <addrReg>, <addr>)
+{
+    .alias  temp_Lo = <addr> & 0xFFFF
+    .alias  temp_Hi_ = <addr> / 0x10000
+    .alias  temp_r = temp_Lo / 0x8000
+    .alias  temp_Hi = temp_Hi_ + temp_r
+    lis     <addrReg>, temp_Hi
+    stw     <storeReg>, temp_Lo(<addrReg>)
+}
+
+HOOK @ $806bf8d4
+{
+  %swd(r3, r12, SOUND_GROUP_0D6_HEAP_LEVEL_ADDR)
+  lwz r3, 0x01D0(r27)      # Original operatation
+}
+
+HOOK @ $806bf8fc
+{
+  %swd(r3, r12, SOUND_GROUP_000_HEAP_LEVEL_ADDR)
+  lwz r3, 0x01D0(r27)      # Original operatation  
+}
+
+HOOK @ $806bf910
+{
+  %swd(r3, r12, SOUND_GROUP_0D5_HEAP_LEVEL_ADDR)
+  lwz r3, 0x01D0(r27)      # Original operatation  
+}
+
+HOOK @ $806bf924
+{
+  %swd(r3, r12, SOUND_GROUP_0D7_HEAP_LEVEL_ADDR)
+  lwz r3, 0x01D0(r27)      # Original operatation  
+}
+
+HOOK @ $806bf938
+{
+  %swd(r3, r12, SOUND_GROUP_0D8_HEAP_LEVEL_ADDR)
+  lwz r3, 0x01D0(r27)      # Original operatation  
+}
+
+HOOK @ $806bf94c
+{
+  %swd(r3, r12, SOUND_GROUP_027_HEAP_LEVEL_ADDR)
+  li r0, 0                 # Original operatation  
 }

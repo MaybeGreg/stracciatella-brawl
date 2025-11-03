@@ -1,3 +1,4 @@
 tools/VSDsync/Config.ini
 tools/VSDsync/README.txt
 sd_base/codes/*.GCT
+tools/VSDsync/sd.raw
