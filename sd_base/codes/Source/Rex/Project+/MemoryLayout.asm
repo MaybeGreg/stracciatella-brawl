@@ -15,8 +15,7 @@ Memory Extension for FighterXResource1 [Dantarion, ASF1nk, DukeItOut, Exul Anima
 # int 0x5ABDC0 @ $80421EAC
 # int 0x5ABDC0 @ $80421ECC
 # #int 0x592000 @ $80421ECC	Original line for reference.
-
-#  P+ version
+# P+ version
 int 0x592000 @ $80421B44
 int 0x592000 @ $80421B64
 int 0x592000 @ $80421B84
@@ -31,24 +30,14 @@ Memory Extension for FighterXResource2 [Dantarion, Exul Anima]
 #
 # 0.53MB -> 0.62MB
 ##############################################################
-# int 0x9E680 @ $80421B54
-# int 0x9E680 @ $80421B74
-# int 0x9E680 @ $80421B94
-# int 0x9E680 @ $80421BB4
-# int 0x9E680 @ $80421E1C
-# int 0x9E680 @ $80421E3C
-# int 0x9E680 @ $80421EBC
-# int 0x9E680 @ $80421EDC
-
-#  P+ version
-int 0x91E80 @ $80421B54
-int 0x91E80 @ $80421B74
-int 0x91E80 @ $80421B94
-int 0x91E80 @ $80421BB4
-int 0x91E80 @ $80421E1C
-int 0x91E80 @ $80421E3C
-int 0x91E80 @ $80421EBC
-int 0x91E80 @ $80421EDC
+int 0x9E680 @ $80421B54
+int 0x9E680 @ $80421B74
+int 0x9E680 @ $80421B94
+int 0x9E680 @ $80421BB4
+int 0x9E680 @ $80421E1C
+int 0x9E680 @ $80421E3C
+int 0x9E680 @ $80421EBC
+int 0x9E680 @ $80421EDC
 
 #########################################
 !Stage Resource 6.4MB -> 6.1MB [DukeItOut]
@@ -64,8 +53,8 @@ int 0x666700 @ $80422334
 !Memory Extension for CSS/SSS MenuResource (+0.58MB) [DukeItOut]
 ################################################################
 /* Not used in REX as this will be managed separately for the CSS rules menu until modern RSP loading is integrated. */
-#int 0x73EA00 @ $80422384 #+0.88MB version. Disabled for now so characters can take advanage of an extra 0.3MB due to the above code
-int 0X6F1CA0 @ $80422384  #+0.58MB version. Keep this size synchronized with the Stage Resource change! (i.e. if Stage Resource = 6.4MB, this can be made +0.88)
+int 0x73EA00 @ $80422384 #+0.88MB version. Disabled for now so characters can take advanage of an extra 0.3MB due to the above code
+#int 0X6F1CA0 @ $80422384  #+0.58MB version. Keep this size synchronized with the Stage Resource change! (i.e. if Stage Resource = 6.4MB, this can be made +0.88)
 
 ###########################################
 !Network Resource 1.4MB -> 1.1MB [DukeItOut]

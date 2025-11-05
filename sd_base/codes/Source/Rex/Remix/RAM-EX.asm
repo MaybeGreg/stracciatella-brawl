@@ -49,216 +49,216 @@ HOOK @ $800F2AB8
 
 # Requires "Reduce InfoInstance in SSE v2 [Sammi Husky, Kapedani]" code
 
-# HOOK @ $800F1C00
-# {
-#     li r3, 0x34					# \ Store ID of heap to allocate to.
-#     stw r3, 0xD4(r21)			# /
-#     lwz r3, 0xD4(r21)			# Original instruction.
-# }
+HOOK @ $800F1C00
+{
+    li r3, 0x34					# \ Store ID of heap to allocate to.
+    stw r3, 0xD4(r21)			# /
+    lwz r3, 0xD4(r21)			# Original instruction.
+}
 
-# HOOK @ $800F2BF8
-# {
-#     li r4, 0x28					# \ Store ID of heap to allocate to.
-#     stw r4, 0xD4(r31)			# /
-#     lwz r4, 0x88(r31)			# Original instruction.
-# }
+HOOK @ $800F2BF8
+{
+    li r4, 0x28					# \ Store ID of heap to allocate to.
+    stw r4, 0xD4(r31)			# /
+    lwz r4, 0x88(r31)			# Original instruction.
+}
 
-# HOOK @ $800F2C3C
-# {
-#     li r4, 0x28					# \ Store ID of heap to allocate to.
-#     stw r4, 0x4(r3)				# /
-#     lwz r4, 0x88(r31)			# Original instruction.
-# }
+HOOK @ $800F2C3C
+{
+    li r4, 0x28					# \ Store ID of heap to allocate to.
+    stw r4, 0x4(r3)				# /
+    lwz r4, 0x88(r31)			# Original instruction.
+}
 
-# HOOK @ $800F1C0C
-# {
-#     stw r3, 0x88(r21)			# Original instruction.
-#     stw r3, 0xEC(r21)			# Stores value of allocation for later deallocation during IfSnapSaveTask destructor.
-# }
+HOOK @ $800F1C0C
+{
+    stw r3, 0x88(r21)			# Original instruction.
+    stw r3, 0xEC(r21)			# Stores value of allocation for later deallocation during IfSnapSaveTask destructor.
+}
 
-# op li r5, 0x4 @ $800F2B5C       # Sets expected framebuffer type to RGB565.
-# op li r3, 0x2E @ $800387D0      # Moves JPEG quantization tables (important for JPEG encoding, size 7KB) to GameGlobal heap.
+op li r5, 0x4 @ $800F2B5C       # Sets expected framebuffer type to RGB565.
+op li r3, 0x2E @ $800387D0      # Moves JPEG quantization tables (important for JPEG encoding, size 7KB) to GameGlobal heap.
 
-# HOOK @ $800387EC
-# {
-#     mr r11, r3					# Saves r3.
-#     li r3, 0x2C					# \
-#     lis r12, 0x8002				#  \
-#     ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     addis r3, r3, 0x9			# \
-#     addi r3, r3, 0x6200			#  > Offset to correct framebuffer copy.
-#     mr r4, r3					# /
-#     stw r4, 0x350(r30)          # Sets address of existing RGB565 framebuffer copy to make the screenshot from.
-#     mr r3, r11					# Restores r3.
-# }
+HOOK @ $800387EC
+{
+    mr r11, r3					# Saves r3.
+    li r3, 0x2C					# \
+    lis r12, 0x8002				#  \
+    ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
+    mtctr r12					#  /
+    bctrl						# /
+    addis r3, r3, 0x9			# \
+    addi r3, r3, 0x6200			#  > Offset to correct framebuffer copy.
+    mr r4, r3					# /
+    stw r4, 0x350(r30)          # Sets address of existing RGB565 framebuffer copy to make the screenshot from.
+    mr r3, r11					# Restores r3.
+}
 
-# HOOK @ $80038844
-# {
-#     mr r11, r3					# Saves r3.
-#     li r3, 0x2C					# \
-#     lis r12, 0x8002				#  \
-#     ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     addis r3, r3, 0x9			# \
-#     addi r3, r3, 0x6200			#  > Offset to correct framebuffer copy.
-#     mr r4, r3					# /
-#     stw r4, 0x350(r30)          # Sets address of existing RGB565 framebuffer copy to make the screenshot from.
-#     mr r3, r11					# Restores r3.
-# }
+HOOK @ $80038844
+{
+    mr r11, r3					# Saves r3.
+    li r3, 0x2C					# \
+    lis r12, 0x8002				#  \
+    ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
+    mtctr r12					#  /
+    bctrl						# /
+    addis r3, r3, 0x9			# \
+    addi r3, r3, 0x6200			#  > Offset to correct framebuffer copy.
+    mr r4, r3					# /
+    stw r4, 0x350(r30)          # Sets address of existing RGB565 framebuffer copy to make the screenshot from.
+    mr r3, r11					# Restores r3.
+}
 
-# op lwz r3, 0xEC(r29) @ $800F1D6C	# Prevents deallocation of the RGBA8 buffer in Network since it was never allocated to begin with, and instead deallocates RAM in OverlayMenu not otherwise deallocated.
+op lwz r3, 0xEC(r29) @ $800F1D6C	# Prevents deallocation of the RGBA8 buffer in Network since it was never allocated to begin with, and instead deallocates RAM in OverlayMenu not otherwise deallocated.
 
-# # ########################################################
-# # ## == Classic/All-Stars Mode Results Screen Stills == ##
-# # ########################################################
+########################################################
+## == Classic/All-Stars Mode Results Screen Stills == ##
+########################################################
 
-# HOOK @ $800DEDFC
-# {
-#     /* Checks for certain modes (either Classic or All-Star). If not either of these skip this code. */
+HOOK @ $800DEDFC
+{
+    /* Checks for certain modes (either Classic or All-Star). If not either of these skip this code. */
     
-#     lis r12, 0x8002				# \
-#     ori r12, r12 0xD018			#  > Call getInstance/[gfSceneManager].
-#     mtctr r12					# /
-#     bctrl						# Scene manager address is placed into r3.
-#     lwz r3, 0x10 (r3)			# Load currentSequence (10th offset from scene manager) into r3.
-#     lwz r3, 0 (r3)				# \ Load address of currentSequence name into r3 and save for later.
-#     mr r11, r3					# /
+    lis r12, 0x8002				# \
+    ori r12, r12 0xD018			#  > Call getInstance/[gfSceneManager].
+    mtctr r12					# /
+    bctrl						# Scene manager address is placed into r3.
+    lwz r3, 0x10 (r3)			# Load currentSequence (10th offset from scene manager) into r3.
+    lwz r3, 0 (r3)				# \ Load address of currentSequence name into r3 and save for later.
+    mr r11, r3					# /
 
-#     lis r4, 0x8070				# \ Load address of string "sqSingleSimple" into r4.
-#     ori r4, r4, 0x24D0 			# /
-#     lis r12, 0x803F				# \
-#     ori r12, r12, 0xA3FC		#  \ Call strcmp.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
-#     beq is_mode					# /
+    lis r4, 0x8070				# \ Load address of string "sqSingleSimple" into r4.
+    ori r4, r4, 0x24D0 			# /
+    lis r12, 0x803F				# \
+    ori r12, r12, 0xA3FC		#  \ Call strcmp.
+    mtctr r12					#  /
+    bctrl						# /
+    cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
+    beq is_mode					# /
 
-#     mr r3, r11					# Restore address of currentSequence name to r3.
-#     lis r4, 0x8070				# \ Load address of string "sqSingleAllstar" into r4.
-#     ori r4, r4, 0x27E0 			# /
-#     lis r12, 0x803F				# \
-#     ori r12, r12, 0xA3FC		#  \ Call strcmp.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
-#     beq is_mode					# /
+    mr r3, r11					# Restore address of currentSequence name to r3.
+    lis r4, 0x8070				# \ Load address of string "sqSingleAllstar" into r4.
+    ori r4, r4, 0x27E0 			# /
+    lis r12, 0x803F				# \
+    ori r12, r12, 0xA3FC		#  \ Call strcmp.
+    mtctr r12					#  /
+    bctrl						# /
+    cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
+    beq is_mode					# /
     
-#     b skip_to_end				# Otherwise skip to end: this is not Classic or All-Star Mode.
+    b skip_to_end				# Otherwise skip to end: this is not Classic or All-Star Mode.
 
 
-#     /* Hide HUD for just long enough for the framebuffer copy to not have it, approximately 2 frames. */
+    /* Hide HUD for just long enough for the framebuffer copy to not have it, approximately 2 frames. */
 
-# is_mode:
-#     lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
-#     ori r3, r3, 0x2F40			# /
-#     li r4, 0x8					# Set to HUD layer.
-#     li r5, 0x0					# Make disappear.
-#     lis r12, 0x8000				# \
-#     ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to hide HUD.
-#     mtctr r12					#  /
-#     bctrl						# /
-# skip_to_end:
-#     lwz r3, 0x0008(r30)			# Original instruction.
-# }
+is_mode:
+    lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
+    ori r3, r3, 0x2F40			# /
+    li r4, 0x8					# Set to HUD layer.
+    li r5, 0x0					# Make disappear.
+    lis r12, 0x8000				# \
+    ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to hide HUD.
+    mtctr r12					#  /
+    bctrl						# /
+skip_to_end:
+    lwz r3, 0x0008(r30)			# Original instruction.
+}
 
-# HOOK @ $800DEBBC
-# {
-#     /* Checks for certain modes (either Classic or All-Star). If not either of these skip this code. */
+HOOK @ $800DEBBC
+{
+    /* Checks for certain modes (either Classic or All-Star). If not either of these skip this code. */
     
-#     lis r12, 0x8002				# \
-#     ori r12, r12 0xD018			#  > Call getInstance/[gfSceneManager].
-#     mtctr r12					# /
-#     bctrl						# Scene manager address is placed into r3.
-#     lwz r3, 0x10 (r3)			# Load currentSequence (10th offset from scene manager) into r3.
-#     lwz r3, 0 (r3)				# \ Load address of currentSequence name into r3 and save for later.
-#     mr r11, r3					# /
+    lis r12, 0x8002				# \
+    ori r12, r12 0xD018			#  > Call getInstance/[gfSceneManager].
+    mtctr r12					# /
+    bctrl						# Scene manager address is placed into r3.
+    lwz r3, 0x10 (r3)			# Load currentSequence (10th offset from scene manager) into r3.
+    lwz r3, 0 (r3)				# \ Load address of currentSequence name into r3 and save for later.
+    mr r11, r3					# /
 
-#     lis r4, 0x8070				# \ Load address of string "sqSingleSimple" into r4.
-#     ori r4, r4, 0x24D0 			# /
-#     lis r12, 0x803F				# \
-#     ori r12, r12, 0xA3FC		#  \ Call strcmp.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
-#     beq is_mode					# /
+    lis r4, 0x8070				# \ Load address of string "sqSingleSimple" into r4.
+    ori r4, r4, 0x24D0 			# /
+    lis r12, 0x803F				# \
+    ori r12, r12, 0xA3FC		#  \ Call strcmp.
+    mtctr r12					#  /
+    bctrl						# /
+    cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
+    beq is_mode					# /
 
-#     mr r3, r11					# Restore address of currentSequence name to r3.
-#     lis r4, 0x8070				# \ Load address of string "sqSingleAllstar" into r4.
-#     ori r4, r4, 0x27E0 			# /
-#     lis r12, 0x803F				# \
-#     ori r12, r12, 0xA3FC		#  \ Call strcmp.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
-#     beq is_mode					# /
+    mr r3, r11					# Restore address of currentSequence name to r3.
+    lis r4, 0x8070				# \ Load address of string "sqSingleAllstar" into r4.
+    ori r4, r4, 0x27E0 			# /
+    lis r12, 0x803F				# \
+    ori r12, r12, 0xA3FC		#  \ Call strcmp.
+    mtctr r12					#  /
+    bctrl						# /
+    cmpwi r3, 0					# \ If sequence name strings match, do mode-specific code.
+    beq is_mode					# /
     
-#     b skip_to_end				# Otherwise skip to end: this is not Classic or All-Star Mode.
+    b skip_to_end				# Otherwise skip to end: this is not Classic or All-Star Mode.
 
 
-#     /* Hide HUD for just long enough for the framebuffer copy to not have it, approximately 2 frames. */
+    /* Hide HUD for just long enough for the framebuffer copy to not have it, approximately 2 frames. */
 
-# is_mode:
-#     lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
-#     ori r3, r3, 0x2F40			# /
-#     li r4, 0x8					# Set to HUD layer.
-#     li r5, 0x0					# Make disappear.
-#     lis r12, 0x8000				# \
-#     ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to hide HUD.
-#     mtctr r12					#  /
-#     bctrl						# /
-# skip_to_end:
-#     li r3, 0x0                  # Original instruction.
-# }
+is_mode:
+    lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
+    ori r3, r3, 0x2F40			# /
+    li r4, 0x8					# Set to HUD layer.
+    li r5, 0x0					# Make disappear.
+    lis r12, 0x8000				# \
+    ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to hide HUD.
+    mtctr r12					#  /
+    bctrl						# /
+skip_to_end:
+    li r3, 0x0                  # Original instruction.
+}
 
-# HOOK @ $806D3838
-# {
-#     lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
-#     ori r3, r3, 0x2F40			# /
-#     li r4, 0x8					# Set to HUD layer.
-#     li r5, 0x1					# Make reappear.
-#     lis r12, 0x8000				# \
-#     ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to reshow HUD.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     lis r3, 0x805A				# Original instruction.
-# }
+HOOK @ $806D3838
+{
+    lis r3, 0x8067				# \ Address of layer visibility settings, as per Code Menu.
+    ori r3, r3, 0x2F40			# /
+    li r4, 0x8					# Set to HUD layer.
+    li r5, 0x1					# Make reappear.
+    lis r12, 0x8000				# \
+    ori r12, r12, 0xD234		#  \ Call function setLayerDispStatus/[gfSceneRoot]/gf_3d_scene.o to reshow HUD.
+    mtctr r12					#  /
+    bctrl						# /
+    lis r3, 0x805A				# Original instruction.
+}
 
-#     /* Force results screen to use existing RGB565 framebuffer copy. */
+    /* Force results screen to use existing RGB565 framebuffer copy. */
 
-# HOOK @ $800EEC88
-# {
-#     addi r5, r29, 0x258			# Original instruction.
-#     mr r11, r3					# Saves r3.
-#     li r3, 0x2C					# \
-#     lis r12, 0x8002				#  \
-#     ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
-#     mtctr r12					#  /
-#     bctrl						# /
-#     addis r3, r3, 0x9			# \
-#     addi r12, r3, 0x6200		#  > Offset to correct framebuffer copy.
-#     mr r3, r11					# /
-#     rlwinm r12, r12, 27, 0, 31	# \ Forces results screen to use existing RGB565 framebuffer copy for its ending photo. It's stored shifted right 5 bits for some reason and is masked into a physical address, though it can take either.
-#     stw r12, 0xC(r5)			# /
-#     li r12, 0x4					# \ Sets expected framebuffer format to RGB565.
-#     stw r12, 0x14(r5)			# /
-#     addi r4, r31, 0x3A0			# Repeat instruction right before hook to restore value of r4.
-# }
+HOOK @ $800EEC88
+{
+    addi r5, r29, 0x258			# Original instruction.
+    mr r11, r3					# Saves r3.
+    li r3, 0x2C					# \
+    lis r12, 0x8002				#  \
+    ori r12, r12, 0x49CC		#   > Gets address of CopyFB heap.
+    mtctr r12					#  /
+    bctrl						# /
+    addis r3, r3, 0x9			# \
+    addi r12, r3, 0x6200		#  > Offset to correct framebuffer copy.
+    mr r3, r11					# /
+    rlwinm r12, r12, 27, 0, 31	# \ Forces results screen to use existing RGB565 framebuffer copy for its ending photo. It's stored shifted right 5 bits for some reason and is masked into a physical address, though it can take either.
+    stw r12, 0xC(r5)			# /
+    li r12, 0x4					# \ Sets expected framebuffer format to RGB565.
+    stw r12, 0x14(r5)			# /
+    addi r4, r31, 0x3A0			# Repeat instruction right before hook to restore value of r4.
+}
 
-# HOOK @ $800EDD9C
-# {
-#     lbz r0, 0 (r3)				# Beginning instruction of endKeepScreen/[gfKeepFrameBuffer]/gf_keep_fb.o
-#     li r4, 0x0					# Stops RGB565 framebuffer copy from being deleted once it stops displaying.
-#     lis r12 0x800E				# \
-#     ori r12, r12, 0xDDA0		#  > Branch back to processAnim/[ifSimpleResultTask]/if_simple_result.o at the end of this excursion.
-#     mtlr r12					# /
-#     lis r12, 0x8002				# \
-#     ori r12, r12, 0x4e40		#  \ Branch to middle of endKeepScreen/[gfKeepFrameBuffer]/gf_keep_fb.o to patch this function just for this call.
-#     mtctr r12					#  /
-#     bctr						# /
-# }
+HOOK @ $800EDD9C
+{
+    lbz r0, 0 (r3)				# Beginning instruction of endKeepScreen/[gfKeepFrameBuffer]/gf_keep_fb.o
+    li r4, 0x0					# Stops RGB565 framebuffer copy from being deleted once it stops displaying.
+    lis r12 0x800E				# \
+    ori r12, r12, 0xDDA0		#  > Branch back to processAnim/[ifSimpleResultTask]/if_simple_result.o at the end of this excursion.
+    mtlr r12					# /
+    lis r12, 0x8002				# \
+    ori r12, r12, 0x4e40		#  \ Branch to middle of endKeepScreen/[gfKeepFrameBuffer]/gf_keep_fb.o to patch this function just for this call.
+    mtctr r12					#  /
+    bctr						# /
+}
 
 
 ################################################################

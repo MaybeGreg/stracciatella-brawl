@@ -700,6 +700,8 @@ hastyScroll:
   	add r26, r26, r6
 }
 
+.include Source/KingJigglyPuff/ProjectM/CSS.asm
+
 .include Source/KingJigglyPuff/LegacyTE/Masquerade.asm
 
 ###################################
@@ -760,4 +762,4 @@ Snake's U-Smash can Have Horizontal Velocity [Magus]
 
 .include Source/Community/Community/Syringe.asm
 
-.include BOOST.txt
+.include Source/Community/Project+/MultiGCT.asm		# MAKE SURE THIS IS AT THE VERY BOTTOM OF THIS CODESET!!!

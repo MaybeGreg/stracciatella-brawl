@@ -67,6 +67,7 @@ string    "SDStreamOpen (slot:%d): %s"          @ $80507b80
 uint8_t   0xA                                   @ $80507b9a
 string    "SDStreamOpen Failed: %s"             @ $80507ba0
 uint8_t   0xA                                   @ $80507bb7
+string    "/codes/"                             @ $80507bd0 # Sets path to code directory
 
 
 #################################################################
