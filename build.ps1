@@ -1,18 +1,62 @@
 # Path to GCTRealMate
 $gctPath = ".\sd_base\codes\GCTRealMate.exe"
 $enterFile = ".\sd_base\codes\enter.txt"
+$sourceInjectDir = ".\sd_base\codes\Source\Community\Injects"
+$destInjectDir   = ".\sd_base\codes\rsbe\pf\injects"
 
-if (Test-Path $gctPath) {
-    Write-Host "`n`nCreating RSBE01 Codes`n"
-    Start-Process -FilePath $gctPath ".\sd_base\codes\RSBE01.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
-    Write-Host "`n`nCreating BOOST Codes`n"
-    Start-Process -FilePath $gctPath ".\sd_base\codes\BOOST.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
-    Write-Host "`n`nCreating REX Codes`n"
-    Start-Process -FilePath $gctPath ".\sd_base\codes\REX.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
-    Write-Host "`n`nCreating KingJigglyPuff Codes`n"
-    Start-Process -FilePath $gctPath ".\sd_base\codes\KJP.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
+# Check if GCTRealMate exists
+if (-not (Test-Path $gctPath)) {
+    Write-Host "`nError: Cannot find GCTRealMate.exe" -ForegroundColor Red
+    pause
+    exit
+}
+# Create destination folder if it doesn't exist
+if (-not (Test-Path $destInjectDir)) {
+    New-Item -ItemType Directory -Path $destInjectDir -Force | Out-Null
+}
+
+Write-Host "`n###################################################################################################`n"
+Write-Host "`n`nCreating codes for RSBE01`n"
+Start-Process -FilePath $gctPath ".\sd_base\codes\RSBE01.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
+Write-Host "`n###################################################################################################`n"
+Write-Host "`n`nCreating codes for NETPLAY`n"
+Start-Process -FilePath $gctPath ".\sd_base\codes\NETPLAY.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
+Write-Host "`n###################################################################################################`n"
+Write-Host "`n`nCreating codes for BOOST`n"
+Start-Process -FilePath $gctPath ".\sd_base\codes\BOOST.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
+Write-Host "`n###################################################################################################`n"
+Write-Host "`n`nCreating codes for NETBOOST`n"
+Start-Process -FilePath $gctPath ".\sd_base\codes\NETBOOST.txt" -RedirectStandardInput $enterFile -NoNewWindow -Wait
+
+Write-Host "`n###################################################################################################`n"
+Write-Host "`n`n`Creating Fighter Inject GCTs`n"
+$asmFiles = Get-ChildItem -Path $sourceInjectDir -Filter "*.txt" -File
+
+if ($asmFiles.Count -eq 0) {
+    Write-Host "No .txt files found in $sourceInjectDir" -ForegroundColor Gray
 } else {
-    Write-Host "`nError: Cannot find GCTRealMate.exe"
+    foreach ($asm in $asmFiles) {
+        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($asm.Name)
+        $inputTxt = "$sourceInjectDir\$baseName.txt"
+        $outputGct = "$baseName.GCT"
+
+        Write-Host "  Building: $baseName.GCT" -ForegroundColor White
+
+        # Run GCTRealMate on the corresponding .asm file (assumes .txt has same base name as .asm)
+        if (Test-Path $inputTxt) {
+            Start-Process -FilePath $gctPath $inputTxt -RedirectStandardInput $enterFile -NoNewWindow -Wait
+
+            # Move the generated .GCT to the pf\injects folder (overwrite if exists)
+            if (Test-Path "$sourceInjectDir\$outputGct") {
+                Move-Item -Path "$sourceInjectDir\$outputGct" -Destination "$destInjectDir\$outputGct" -Force
+                Write-Host "    → Moved to pf\injects\$outputGct" -ForegroundColor Green
+            } else {
+                Write-Host "    Warning: "$sourceInjectDir\$outputGct" was not created!" -ForegroundColor Red
+            }
+        } else {
+            Write-Host "    Skipping: $baseName.asm not found!" -ForegroundColor Red
+        }
+    }
 }
 
 # Path to VDSSync
