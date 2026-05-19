@@ -12,7 +12,7 @@ op blt- 0x34	   @ $8018CFC8
 ########################################################################
 word 0x117E00 @ $8042207C     # Decreases MenuInstance heap by 48KB: 16KB is to resolve overlap between this and BrawlX heap in SSE, the other 32KB is room for expansion.
 
-.include Source/Project+/StageFiles.asm
+.include Source/Netplay/Net-StageFiles.asm
 .include Source/Project+/CustomRequirements.asm
 .include Source/Project+/Timeout.asm
 .include Source/Project+/UCF.asm
@@ -206,6 +206,7 @@ loc_0x12C:
 
 
 #.include Source/Extras/Console.asm	# Only use this on a Wii or Wii U! The codes in this are necessary for the slower specifications of the actual console.
+.include Source/Extras/Netplay.asm	# Only use this in Dolphin! The codes in this will result in bad behavior on the Wii!
 
 .include Source/Extras/More.asm
 

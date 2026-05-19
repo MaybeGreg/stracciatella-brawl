@@ -22,7 +22,7 @@ NotR:
 int 0x80000 @ $806A080C	# Make Nunchucks use (-) instead of C
 
 ################################################################################################################
-![Legacy TE] Hold Z for AltZ Characters (no R-alts) [PyotrLuzhin, codes, ASF1nk, Yohan1044, DukeItOut, QuickLava]
+[Legacy TE] Hold Z for AltZ Characters (no R-alts) [PyotrLuzhin, codes, ASF1nk, Yohan1044, DukeItOut, QuickLava]
 ################################################################################################################
 .macro sqAdvCheck()
 {
