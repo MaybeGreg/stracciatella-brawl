@@ -87,11 +87,11 @@ Lucario Clone Aura Sphere GFX Fix [Dantarion, ds22, DesiacX]
     lis r3, <Effect.pacID>
     b %END%
 }
-HOOK @ $80AA95B8    #Uses Fighter ID followed by Effect.pac ID
+HOOK @ $80AA95B8
 {
-    %GFXFix (0x26, 0x27)    #Mewtwo
-	%GFXFix (0x2A, 0x187)   #Ridley
-    lis r3, 0x22            #If no fix is specified, use Lucario's
+	%GFXFix (0x26, 0x27) # Mewtwo
+	%GFXFix (0x2A, 0x187) # Ridley
+	lis r3, 0x22 # If no fix is specified, use Lucario's
 }
 
 ############################################################
@@ -106,22 +106,20 @@ Kirby Lucario Clone Aura Sphere GFX Fix [ds22, DesiacX, Eon]
 }
 HOOK @ $80AA95AC
 {
-  bne notKirby
-#awkward memory stuff to get to LA-Basic[72] of the projectile
-  lwz r3, -8(r20) #get module accessor
-  lwz r3, 0x64(r3) #get work module
-  lwz r3, 0x20(r3) #get LA's
-  lwz r3, 0xC(r3) #get Basic's
-  lwz r3, 0x120(r3) #get LA-Basic[72] (*0x4 = 0x120)
-  %GFXFix(0x26, 0x96) #MewtwoHat
-  %GFXFix(0x2A, 0x97) #RidleyHat
-lucarioHat:
-notKirby:
-  lis r3, 0x123
-
-end:
-  cmpwi r30, 0x5
-
+	bne notKirby
+	 # awkward memory stuff to get to LA-Basic[72] of the projectile
+	lwz r3, -8(r20) # get module accessor
+	lwz r3, 0x64(r3) # get work module
+	lwz r3, 0x20(r3) # get LA's
+	lwz r3, 0xC(r3) # get Basic's
+	lwz r3, 0x120(r3) # get LA-Basic[72] (*0x4 = 0x120)
+	%GFXFix(0x26, 0x96) # MewtwoHat
+	%GFXFix(0x2A, 0x97) # RidleyHat
+	lucarioHat:
+	notKirby:
+	lis r3, 0x123
+	end:
+	cmpwi r30, 0x5
 }
 
 #####################################################################################################
@@ -134,45 +132,45 @@ Lucario Clone Aura Sphere Bone ID Fix [Dantarion, ds22, PyotrLuzhin, Yohan1044, 
 	li r6, <BoneID>
 	b %END%
 }
-HOOK @ $80AA9D60		#Use Register 3, followed by Fighter ID and Bone ID
+HOOK @ $80AA9D60
 {
-	%BoneIDFixA(r3, 0x26, 0x24)		#Mewtwo
-	%BoneIDFixA(r3, 0x2A, 0x1A)		#Ridley
-	li r6, 0x1F						#If not defined, use Lucario
+	%BoneIDFixA(r3, 0x26, 0x24) # Mewtwo
+	%BoneIDFixA(r3, 0x2A, 0x1A) # Ridley
+	li r6, 0x1F # If not defined, use Lucario
 }
 * 06AA9D64 00000014
 * 81970000 7EE4BB78
 * 38610068 38A00003
 * 818C0098 00000000
-HOOK @ $80AA9D98		#Use Register 7, followed by Fighter ID and Bone ID
+HOOK @ $80AA9D98
 {
 	lwz r7, 0x20 (r26)
 	lwz r7, 0x0C (r7)
 	lwz r7, 0x24 (r7)
-	%BoneIDFixA(r7, 0x26, 0x24)		#Mewtwo
-	%BoneIDFixA(r7, 0x2A, 0x1A)		#Ridley
-	li r6, 0x35						#If not defined, use Lucario
+	%BoneIDFixA(r7, 0x26, 0x24) # Mewtwo
+	%BoneIDFixA(r7, 0x2A, 0x1A) # Ridley
+	li r6, 0x35 # If not defined, use Lucario
 }
-HOOK @ $80AAA768		#Use Register 3, followed by Fighter ID and Bone ID
+HOOK @ $80AAA768
 {
-	%BoneIDFixA(r3, 0x26, 0x24)		#Mewtwo
-	%BoneIDFixA(r3, 0x2A, 0x1A)		#Ridley
-	li r6, 0x1F						#If not defined, use Lucario
+	%BoneIDFixA(r3, 0x26, 0x24) # Mewtwo
+	%BoneIDFixA(r3, 0x2A, 0x1A) # Ridley
+	li r6, 0x1F # If not defined, use Lucario
 }
 * 06AAA76C 00000014
 * 819B0000 7F64DB78
 * 38610014 38A00003
 * 818C0098 00000000
-HOOK @ $80AAA7A0	#Use Register 7, followed by Fighter ID and Bone ID
+HOOK @ $80AAA7A0
 {
 	lwz r7, 0xD8 (r31)
 	lwz r7, 0x64 (r7)
 	lwz r7, 0x20 (r7)
 	lwz r7, 0x0C (r7)
 	lwz r7, 0x24 (r7)
-	%BoneIDFixA(r7, 0x26, 0x3D)		#Mewtwo
-	%BoneIDFixA(r7, 0x2A, 0x1A)		#Ridley
-	li r6, 0x35						#If not defined, use Lucario
+	%BoneIDFixA(r7, 0x26, 0x3D) # Mewtwo
+	%BoneIDFixA(r7, 0x2A, 0x1A) # Ridley
+	li r6, 0x35 # If not defined, use Lucario
 }
 
 Knuckles Fixes
@@ -199,19 +197,19 @@ op cmpwi r3, 5 @ $80A0AA5C
 op beq 0x78 @ $80A0AA60
 HOOK @ $80A0AAA8
 {
-	lwz r3, 0xD8(r31)			#\
-	lwz r3, 0x64(r3)			#|
-	lis r4, 0x1000				#|
-	addi r4, r4, 7				#| This entire sequence grabs the Fighter ID.
-	lwz r12, 0x0(r3)			#|
-	lwz r12, 0x18(r12)			#|
-	mtctr r12					#|
-	bctrl 						#/
-FighterIDCheck:
-    #%GFXFix(0x69, 0x169)		#Samus Clone Test, ef_custom32
-    %GFXFix(0x4B, 0x1F7)        # Ult Dark Samus, ef_customC0 (311 + 0xC0)
-    lis r4, 0x04				#If not defined, use ef_samus
-end:
+	lwz r3, 0xD8(r31) # \
+	lwz r3, 0x64(r3) # |
+	lis r4, 0x1000 # |
+	addi r4, r4, 7 # | This entire sequence grabs the Fighter ID.
+	lwz r12, 0x0(r3) # |
+	lwz r12, 0x18(r12) # |
+	mtctr r12 # |
+	bctrl # /
+	FighterIDCheck:
+	 # %GFXFix(0x69, 0x169)		#Samus Clone Test, ef_custom32
+	%GFXFix(0x4B, 0x1F7) # Ult Dark Samus, ef_customC0 (311 + 0xC0)
+	lis r4, 0x04 # If not defined, use ef_samus
+	end:
 	lwz r12, 0x0(r30)
 }
 
@@ -227,26 +225,26 @@ Kirby Samus Clone Charge Shot GFX Fix [ds22, DesiacX, Eon, KingJigglypuff]
 }
 HOOK @ $80A0AB1C
 {
-	lwz r3, 0xD8(r31)				#\
-	lwz r3, 0x54(r3)				#|
-	li r4, 3						#|
-	lwz r12, 0x0(r3)				#| Get Link Parent[3] (IE: Who owns the projectile)
-	lwz r12, 0x34(r12)				#|
-	mtctr r12						#|
-	bctrl 							#/
-	lwz r3, 0x60(r3)				#\
-	lwz r3, 0xD8(r3)				#|
-	lwz r3, 0x64(r3)				#|
-	lis r4, 0x1000					#|
-	addi r4, r4, 72					#| Get Kirby's LA-Basic[72] (Hat ID)
-	lwz r12, 0x0(r3)				#|
-	lwz r12, 0x18(r12)				#|
-	mtctr r12						#|
-	bctrl 							#/
-HatIDCheck:
-    #%GFXFix(0x69, 0x169)			#Samus Clone Test, ef_custom32
-    lis r4, 0x108					#If not defined, use ef_KbSamus
-end:
+	lwz r3, 0xD8(r31) # \
+	lwz r3, 0x54(r3) # |
+	li r4, 3 # |
+	lwz r12, 0x0(r3) # | Get Link Parent[3] (IE: Who owns the projectile)
+	lwz r12, 0x34(r12) # |
+	mtctr r12 # |
+	bctrl # /
+	lwz r3, 0x60(r3) # \
+	lwz r3, 0xD8(r3) # |
+	lwz r3, 0x64(r3) # |
+	lis r4, 0x1000 # |
+	addi r4, r4, 72 # | Get Kirby's LA-Basic[72] (Hat ID)
+	lwz r12, 0x0(r3) # |
+	lwz r12, 0x18(r12) # |
+	mtctr r12 # |
+	bctrl # /
+	HatIDCheck:
+	 # %GFXFix(0x69, 0x169)			#Samus Clone Test, ef_custom32
+	lis r4, 0x108 # If not defined, use ef_KbSamus
+	end:
 	lwz r12, 0x0(r30)
 }
 
@@ -286,195 +284,194 @@ Jigglypuff Clone Rollout Bone Fix [codes, DesiacX]
 ################
 HOOK @ $80AC9F9C
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy
-    lwz r4, 216(r30)
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r30)
 }
 ################
 HOOK @ $80ACA3A4
 {
-    %CloneBones(0x6D, 0x7, r27)	#Green Alloy  
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r27) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACA414
 {
-    %CloneBones(0x6D, 0x7, r27)	#Green Alloy
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r27) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACA7E8
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACA858
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACAC2C
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy    
-    lwz r4, 216(r30)
-
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r30)
 }
 ################
 HOOK @ $80ACB050
 {
-    %CloneBones(0x6D, 0x7, r27)	#Green Alloy    
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r27) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACB0c0
 {
-    %CloneBones(0x6D, 0x7, r27)	#Green Alloy    
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r27) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACB6A0
 {
-    %CloneBones(0x6D, 0x9, r5)	#Green Alloy
-    lfs f0, 4(r31)
+	%CloneBones(0x6D, 0x9, r5) # Green Alloy
+	lfs f0, 4(r31)
 }
 ################
 HOOK @ $80ACB7BC
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACB81C
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACBE9C
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy    
-    lwz r4, 216(r30)
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r30)
 }
 ################
 op NOP @ $80ACC0B8
 ################
 HOOK @ $80ACC0C4
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 HOOK @ $80ACC9C4
 {
-    %CloneBones(0x6D, 0x7, r27)	#Green Alloy    
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r27) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACCA34
 {
-    %CloneBones(0x6D, 0x7, r26)	#Green Alloy    
-    lwz r4, 216(r28)
+	%CloneBones(0x6D, 0x7, r26) # Green Alloy
+	lwz r4, 216(r28)
 }
 ################
 HOOK @ $80ACD178
 {
-    %CloneBones(0x6D, 0x9, r28)	#Green Alloy    
-    lwz r3, 216(r30)
+	%CloneBones(0x6D, 0x9, r28) # Green Alloy
+	lwz r3, 216(r30)
 }
 ################
 HOOK @ $80ACD53C
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACD5AC
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80ACD93C
 {
-    %CloneBones(0x6D, 0x7, r30)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r30) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 op NOP @ $80ACDB54
 ################
 HOOK @ $80ACDB60
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 HOOK @ $80ACE580
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy    
-    lwz r4, 216(r27)
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r27)
 }
 ################
 HOOK @ $80ACE5F0
 {
-    %CloneBones(0x6D, 0x7, r26)	#Green Alloy    
-    lwz r4, 216(r27)
+	%CloneBones(0x6D, 0x7, r26) # Green Alloy
+	lwz r4, 216(r27)
 }
 ################
 HOOK @ $80ACEBF0
 {
-    %CloneBones(0x6D, 0x7, r29)	#Green Alloy    
-    lwz r4, 216(r30)
+	%CloneBones(0x6D, 0x7, r29) # Green Alloy
+	lwz r4, 216(r30)
 }
 ################
 HOOK @ $80ACEDF4
 {
-    %CloneBones(0x6D, 0x9, r28)	#Green Alloy    
-    lwz r3, 216(r30)
+	%CloneBones(0x6D, 0x9, r28) # Green Alloy
+	lwz r3, 216(r30)
 }
 ################
 op NOP @ $80ACF8A4
 ################
 HOOK @ $80ACF8B0
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 HOOK @ $80ACFCD4
 {
-    %CloneBones(0x6D, 0x7, r25)	#Green Alloy    
-    lwz r4, 216(r27)
+	%CloneBones(0x6D, 0x7, r25) # Green Alloy
+	lwz r4, 216(r27)
 }
 ################
 HOOK @ $80ACFD94
 {
-    %CloneBones(0x6D, 0x7, r26)	#Green Alloy    
-    lwz r4, 216(r27)
+	%CloneBones(0x6D, 0x7, r26) # Green Alloy
+	lwz r4, 216(r27)
 }
 ################
 HOOK @ $80AD02C8
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80AD0338
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 op NOP @ $80AD0AD4
 ################
 HOOK @ $80AD0AE0
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 CODE @ $80AD0B14
@@ -487,61 +484,61 @@ CODE @ $80AD0B14
 #Yes, this is the only one that checks for Jigglypuff.
 HOOK @ $80AD0B20
 {
-    %CloneBones(0x25, 0x197, r28)	#Jigglypuff
-    %CloneBones(0x6D, 0x7, r28)	    #Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x25, 0x197, r28) # Jigglypuff
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 op NOP @ $80AD0B50
 ################
 HOOK @ $80AD0B5C
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 op NOP @ $80AD0D88
 ################
 HOOK @ $80AD0D94
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 op NOP @ $80AD13F8
 ################
 HOOK @ $80AD1404
 {
-    %CloneBones(0x6D, 0x6, r4)	#Green Alloy    
-    lwz r3, 4(r5)
-    lwz r12, 8(r3)
+	%CloneBones(0x6D, 0x6, r4) # Green Alloy
+	lwz r3, 4(r5)
+	lwz r12, 8(r3)
 }
 ################
 HOOK @ $80AD1628
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80AD1698
 {
-    %CloneBones(0x6D, 0x7, r28)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r28) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80AD17D8
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ################
 HOOK @ $80AD1848
 {
-    %CloneBones(0x6D, 0x7, r31)	#Green Alloy    
-    lwz r4, 216(r29)
+	%CloneBones(0x6D, 0x7, r31) # Green Alloy
+	lwz r4, 216(r29)
 }
 ############################################################
 Jigglypuff Clone Rollout Max Charge GFX Fix [Codes, DesiacX]
@@ -564,8 +561,8 @@ CODE @ $80ACB668
 }
 HOOK @ $80ACB67C
 {
-    %CloneGFX(0x6D, 0x130, 0xF, r29)	#Green Alloy    
-    lwz r3, 8(r30)
+	%CloneGFX(0x6D, 0x130, 0xF, r29) # Green Alloy
+	lwz r3, 8(r30)
 }
 ################
 CODE @ $80ACD1D8
@@ -578,8 +575,8 @@ CODE @ $80ACD1D8
 }
 HOOK @ $80ACD1EC
 {
-    %CloneGFX(0x6D, 0x130, 0xF, r4)	#Green Alloy   
-      lfs f0, 4(r31)
+	%CloneGFX(0x6D, 0x130, 0xF, r4) # Green Alloy
+	lfs f0, 4(r31)
 }
 ################
 CODE @ $80ACEE54
@@ -592,8 +589,8 @@ CODE @ $80ACEE54
 }
 HOOK @ $80ACEE68
 {
-    %CloneGFX(0x6D, 0x130, 0xF, r4)	#Green Alloy  
-    lfs f0, 4(r31)
+	%CloneGFX(0x6D, 0x130, 0xF, r4) # Green Alloy
+	lfs f0, 4(r31)
 }
 ################
 
@@ -619,35 +616,35 @@ HOOK @ $80ACAE38
 ################
 HOOK @ $80ACAE3C
 {
-    lwz r4, 8(r1)
-    %CloneSFX(0x25, 0x17A1, r4)	#Jigglypuff
-    %CloneSFX(0x6D, 0xC43, r4)	#Green Alloy  
+	lwz r4, 8(r1)
+	%CloneSFX(0x25, 0x17A1, r4) # Jigglypuff
+	%CloneSFX(0x6D, 0xC43, r4) # Green Alloy
 }
 ################
 HOOK @ $80ACAE60
 {
-    lwz r4, 8(r1)
-    lwz r1, 0(r1)
-    %CloneSFX(0x25, 0x9B5, r4)	#Jigglypuff
-    %CloneSFX(0x6D, 0x4BD, r4)	#Green Alloy  
+	lwz r4, 8(r1)
+	lwz r1, 0(r1)
+	%CloneSFX(0x25, 0x9B5, r4) # Jigglypuff
+	%CloneSFX(0x6D, 0x4BD, r4) # Green Alloy
 }
 ################
 op NOP @ $80ACF700
 ################
 HOOK @ $80ACF704
 {
-    %CloneSFX(0x25, 0x179F, r3)	#Jigglypuff
-    %CloneSFX(0x6D, 0xC41, r3)	#Green Alloy  
-    lwz r3, 216(r31)
+	%CloneSFX(0x25, 0x179F, r3) # Jigglypuff
+	%CloneSFX(0x6D, 0xC41, r3) # Green Alloy
+	lwz r3, 216(r31)
 }
 ################
 op NOP @ $80ACA098
 ################
 HOOK @ $80ACA09C
 {
-    %CloneSFX(0x25, 0x17A0, r3)	#Jigglypuff
-    %CloneSFX(0x6D, 0xC42, r3)	#Green Alloy  
-    lwz r3, 216(r30)
+	%CloneSFX(0x25, 0x17A0, r3) # Jigglypuff
+	%CloneSFX(0x6D, 0xC42, r3) # Green Alloy
+	lwz r3, 216(r30)
 }
 ################
 
@@ -662,35 +659,35 @@ Dedede Clones Fix [MarioDox]
 
 HOOK @ $80aa1544
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $80aa0af0
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $80aa0d4c
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $8088f768
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $8088e758
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $8088f120
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $8088fa50
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 HOOK @ $80890050
 {
-  %DededeFix(0x20) //Dedede
+	%DededeFix(0x20)
 }
 
 ##################################################
@@ -703,10 +700,10 @@ Bowser Clone Fire Breath Bone Fix [KingJigglypuff]
     li r5, <BoneID>
     b %END%
 }
-HOOK @ $80A391F8        #Use Register 28, followed by Fighter ID and Bone ID
+HOOK @ $80A391F8
 {
-    #%BoneIDFix(0x69, 0x21)        #Bowser Clone Test
-    li r5, 0x33                   #If not defined, use Bowser
+	 # %BoneIDFix(0x69, 0x21)        #Bowser Clone Test
+	li r5, 0x33 # If not defined, use Bowser
 }
 * 06A391FC 0000000C
 * 809B00d8 38610008
@@ -928,45 +925,45 @@ HOOK @ $800791F0		# Music-related?
 loc_0x14:
   lwz r3, 0x194(r3)
 }
-HOOK @ $806E29D0		# Character trophy to load for Classic
+HOOK @ $806E29D0
 {
-  cmpwi r28, 0x2B;  ble+ GotTrophy
-  li r29, Mewtwo_Trophy;  cmpwi r28, Mewtwo_Slot;  beq+ GotTrophy	# If it's Mewtwo's PM slot
-  li r29, Roy_Trophy; 	  cmpwi r28, Roy_Slot;	   beq+ GotTrophy	# If it's Roy's PM slot
-  li r29, Knuckles_Trophy;cmpwi r28, Knuckles_Slot;beq+ GotTrophy	# if it's Knuckles' P+ slot 
-  li r29, Giga_Bowser_Trophy;cmpwi r28, Giga_Bowser_Slot;beq+ GotTrophy	# if it's Giga Bowser's slot 
-  li r29, Wario_Man_Trophy;cmpwi r28, Wario_Man_Slot;beq+ GotTrophy	# if it's Wario-Man's slot 
-  li r29, Ridley_Trophy;cmpwi r28, Ridley_Slot;beq+ GotTrophy	# if it's Ridley's P+Ex slot 
-  li r29, Waluigi_Trophy;cmpwi r28, Waluigi_Slot;beq+ GotTrophy	# if it's Waluigi's P+Ex slot 
-  li r29, Sceptile_Trophy;cmpwi r28, Sceptile_Slot;beq+ GotTrophy	# if it's Sceptile's P+Ex slot 
-  li r29, 0x1		# Default to Mario!!!
-GotTrophy:
-  rlwinm r3, r29, 0, 16, 31
+	cmpwi r28, 0x2B;  ble+ GotTrophy
+	li r29, Mewtwo_Trophy;  cmpwi r28, Mewtwo_Slot;  beq+ GotTrophy # If it's Mewtwo's PM slot
+	li r29, Roy_Trophy; 	  cmpwi r28, Roy_Slot;	   beq+ GotTrophy # If it's Roy's PM slot
+	li r29, Knuckles_Trophy;cmpwi r28, Knuckles_Slot;beq+ GotTrophy # if it's Knuckles' P+ slot
+	li r29, Giga_Bowser_Trophy;cmpwi r28, Giga_Bowser_Slot;beq+ GotTrophy # if it's Giga Bowser's slot
+	li r29, Wario_Man_Trophy;cmpwi r28, Wario_Man_Slot;beq+ GotTrophy # if it's Wario-Man's slot
+	li r29, Ridley_Trophy;cmpwi r28, Ridley_Slot;beq+ GotTrophy # if it's Ridley's P+Ex slot
+	li r29, Waluigi_Trophy;cmpwi r28, Waluigi_Slot;beq+ GotTrophy # if it's Waluigi's P+Ex slot
+	li r29, Sceptile_Trophy;cmpwi r28, Sceptile_Slot;beq+ GotTrophy # if it's Sceptile's P+Ex slot
+	li r29, 0x1 # Default to Mario!!!
+	GotTrophy:
+	rlwinm r3, r29, 0, 16, 31
 }
-HOOK @ $806E47D8	# Character trophy to load for All-Star 
+HOOK @ $806E47D8
 {
-  cmpwi r4, Squirtle_Slot; beq- SquirtleTrophy
-  cmpwi r4, Ivysaur_Slot; beq- IvysaurTrophy
-  cmpwi r4, Charizard_Slot; beq- CharizardTrophy
-  cmpwi r4, 0x2B;  ble+ GotTrophy
-  li r26, Mewtwo_Trophy;  cmpwi r4, Mewtwo_Slot;   beq+ GotTrophy	# If it's Mewtwo's PM slot
-  li r26, Roy_Trophy; 	  cmpwi r4, Roy_Slot;	   beq+ GotTrophy	# If it's Roy's PM slot
-  li r26, Knuckles_Trophy;cmpwi r4, Knuckles_Slot; beq+ GotTrophy	# if it's Knuckles' P+ slot 
-  li r26, Giga_Bowser_Trophy_AllStar;cmpwi r4, Giga_Bowser_Slot; beq+ GotTrophy	# if it's Giga Bowser's slot 
-  li r26, Wario_Man_Trophy_AllStar;cmpwi r4, Wario_Man_Slot; beq+ GotTrophy	# if it's Wario-Man's slot 
-  li r26, Ridley_Trophy_AllStar;cmpwi r4, Ridley_Slot; beq+ GotTrophy	# if it's Ridley's P+Ex slot
-  li r26, Waluigi_Trophy;cmpwi r4, Waluigi_Slot; beq+ GotTrophy	# if it's Waluigi's P+Ex slot  
-  li r26, Sceptile_Trophy;cmpwi r4, Sceptile_Slot; beq+ GotTrophy	# if it's Sceptile's P+Ex slot 
-  li r26, 0x5D		# Default to Mario Finale!!!
-  b GotTrophy
-SquirtleTrophy:
-  li r26, Squirtle_Trophy; b gotTrophy
-IvysaurTrophy:
-  li r26, Ivysaur_Trophy; b GotTrophy
-CharizardTrophy:
-  li r26, Charizard_Trophy
-GotTrophy:
-  rlwinm r3, r26, 0, 16, 31
+	cmpwi r4, Squirtle_Slot; beq- SquirtleTrophy
+	cmpwi r4, Ivysaur_Slot; beq- IvysaurTrophy
+	cmpwi r4, Charizard_Slot; beq- CharizardTrophy
+	cmpwi r4, 0x2B;  ble+ GotTrophy
+	li r26, Mewtwo_Trophy;  cmpwi r4, Mewtwo_Slot;   beq+ GotTrophy # If it's Mewtwo's PM slot
+	li r26, Roy_Trophy; 	  cmpwi r4, Roy_Slot;	   beq+ GotTrophy # If it's Roy's PM slot
+	li r26, Knuckles_Trophy;cmpwi r4, Knuckles_Slot; beq+ GotTrophy # if it's Knuckles' P+ slot
+	li r26, Giga_Bowser_Trophy_AllStar;cmpwi r4, Giga_Bowser_Slot; beq+ GotTrophy # if it's Giga Bowser's slot
+	li r26, Wario_Man_Trophy_AllStar;cmpwi r4, Wario_Man_Slot; beq+ GotTrophy # if it's Wario-Man's slot
+	li r26, Ridley_Trophy_AllStar;cmpwi r4, Ridley_Slot; beq+ GotTrophy # if it's Ridley's P+Ex slot
+	li r26, Waluigi_Trophy;cmpwi r4, Waluigi_Slot; beq+ GotTrophy # if it's Waluigi's P+Ex slot
+	li r26, Sceptile_Trophy;cmpwi r4, Sceptile_Slot; beq+ GotTrophy # if it's Sceptile's P+Ex slot
+	li r26, 0x5D # Default to Mario Finale!!!
+	b GotTrophy
+	SquirtleTrophy:
+	li r26, Squirtle_Trophy; b gotTrophy
+	IvysaurTrophy:
+	li r26, Ivysaur_Trophy; b GotTrophy
+	CharizardTrophy:
+	li r26, Charizard_Trophy
+	GotTrophy:
+	rlwinm r3, r26, 0, 16, 31
 }
 
 #########################################################

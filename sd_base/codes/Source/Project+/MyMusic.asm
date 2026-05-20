@@ -51,14 +51,14 @@ notFoundInTLST:
 	rlwinm r0, r4, 2, 0, 29		# original operation
 }
 ### Song IDs above 0xFE00 are hidden from being picked on random
-# CODE @ $8004f978	# gmCheckBGMIDUseEnable
-# {
-# 	cmplwi r3, 0xFE00
-# 	li r3, 1
-# 	bltlr+
-# 	li r3, 0
-# 	blr
-# }
+CODE @ $8004f978	# gmCheckBGMIDUseEnable
+{
+	cmplwi r3, 0xFE00
+	li r3, 1
+	bltlr+
+	li r3, 0
+	blr
+}
 
 ###################################
 .macro LoadSongCount(<arg1>)
@@ -225,7 +225,7 @@ Miscellaneous Music Customizer [DukeItOut]
 ##########################################
 .alias VSResults 		= 0xF400	# Song ID to play (0x2700 in Brawl)
 .alias AllStarRest		= 0xF400	# Song ID to play (0x2707 in Brawl)
-.alias BreakTheTargets	= 0xF401	# Song ID to play (0x2712 in Brawl)
+.alias BreakTheTargets	= 0x2712	# Song ID to play (0x2712 in Brawl)
 CODE @ $800EB14C			# VS. Results Theme
 {
 	li r5, 0
