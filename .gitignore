@@ -3,5 +3,5 @@ tools/VSDsync/README.txt
 sd_base/codes/*.GCT
 tools/VSDsync/sd.raw
 CLAUDE.md
-sd_base/codes/rsbe/pf/injects/MDEF.GCT
-sd_base/codes/rsbe/pf/injects/DEFINE.GCT
+sd_base/private/wii/app/rsbe/pf/injects/DEFINE.GCT
+sd_base/private/wii/app/rsbe/pf/injects/MDEF.GCT

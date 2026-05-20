@@ -2,7 +2,7 @@
 $gctPath = ".\sd_base\codes\GCTRealMate.exe"
 $enterFile = ".\sd_base\codes\enter.txt"
 $sourceInjectDir = ".\sd_base\codes\Source\Community\Injects"
-$destInjectDir   = ".\sd_base\codes\rsbe\pf\injects"
+$destInjectDir   = ".\sd_base\private\wii\app\rsbe\pf\injects"
 
 # Check if GCTRealMate exists
 if (-not (Test-Path $gctPath)) {
