@@ -56,7 +56,7 @@ CODE @ $80FB3D84
 word 0x10000053 @ $80FB3888
 
 ######################################################
-Run Off Aerial Ground Jump Requires Holding Up [Magus]
+!Run Off Aerial Ground Jump Requires Holding Up [Magus]
 ######################################################
 .alias PSA_Off  = 0x80546D08
 .alias PSA_Off2 = 0x80546D38
@@ -99,7 +99,7 @@ CODE @ $80FC19A0
 }
 
 ################################################################
-Grab During Jumpsquat (Jump-Canceled Grabs) v3.0 [Shanus, Magus]
+!Grab During Jumpsquat (Jump-Canceled Grabs) v3.0 [Shanus, Magus]
 ################################################################
 .alias PSA_Off = 0x80546DB0
 CODE @ $80546DB0
@@ -152,7 +152,7 @@ CODE @ $80FB19AC
 }
 
 ###############################################################
-Body Collisions Only Apply When Thrown v1.3 [Shanus, DukeItOut]
+!Body Collisions Only Apply When Thrown v1.3 [Shanus, DukeItOut]
 ###############################################################
 .alias PSA_Off = 0x80546E38
 CODE @ $80546E38
@@ -298,7 +298,7 @@ CODE @ $80FAB9BC
 }
 
 #####################################################################################
-Dash Cancel v3.1 [Yeroc, Shanus (Location Change), DukeItOut (Other Location Change)]
+!Dash Cancel v3.1 [Yeroc, Shanus (Location Change), DukeItOut (Other Location Change)]
 #####################################################################################
 .alias PSA_Off = 0x80545220
 CODE @ $80545220
@@ -465,7 +465,7 @@ CODE @ $80FC15C8
 }
 
 ###############################################
-Turn and Neutral-B out of SquatReverse [Shanus]
+!Turn and Neutral-B out of SquatReverse [Shanus]
 ###############################################
 .alias PSA_Off = 0x80545498
 CODE @ $80545498
@@ -554,12 +554,12 @@ Respawn Camera Zoom Refocus [ds22]
 * 1A070100 80FBF89C
 
 ###################################################
-Swim Jump uses JumpSquat instead of JumpF [camelot]
+!Swim Jump uses JumpSquat instead of JumpF [camelot]
 ###################################################
 int 0x14 @ $80FBC518
 
 ######################################
-Shield Endlag is now 15 frames [Shanus]
+!Shield Endlag is now 15 frames [Shanus]
 ######################################
 int[2] 0, 15 @ $80FB0FFC	# Edit second hex to change amount of endlag
 
@@ -588,7 +588,7 @@ Shield during Dash 3.0 [Yeroc, Wind Owl]
 * 00070100 80585EC0
 
 #################################
-Dash Dancing v2.3 [Shanus, Magus]
+!Dash Dancing v2.3 [Shanus, Magus]
 #################################
 .alias PSA_Off = 0x805404C8
 * 04B88E68 00000002
@@ -617,7 +617,7 @@ CODE @ $80FAC5A4
 * 02FAC5AC 00130002
 
 ################################################
-No Impact Landing Replaces Light Landing [Magus]
+!No Impact Landing Replaces Light Landing [Magus]
 ################################################
 .alias PSA_Off = 0x80540530
 CODE @ $80540530
@@ -646,7 +646,7 @@ CODE @ $80FC1420
 }	
 
 ##############################################
-Wiggle Out of Tumble in Action 45 v1.2 [Magus]
+!Wiggle Out of Tumble in Action 45 v1.2 [Magus]
 ##############################################
 .alias PSA_Off = 0x805405B0
 CODE @ $805405B0
@@ -676,7 +676,7 @@ CODE @ $80FB3F4C
 }
 
 ##############################################################################
-Tech Window Fixes, Floor Hit Delay Fix, & Tech in Certain Actions v1.2 [Magus]
+!Tech Window Fixes, Floor Hit Delay Fix, & Tech in Certain Actions v1.2 [Magus]
 ##############################################################################
 # .alias PSA_Off = 0x80540640
 # CODE @ $80540640
@@ -887,7 +887,7 @@ CODE @ $80FAC624
 
 
 ################################################################
-Shield Break Getup is 30 Frames and Ending Interruptible [Magus]
+!Shield Break Getup is 30 Frames and Ending Interruptible [Magus]
 ################################################################
 .alias PSA_Off = 0x80540908
 CODE @ $80540908
@@ -920,7 +920,7 @@ CODE @ $80FB5354
 }
 
 ##############################################################
-Wakeup from Sleep is Interruptible Frame 10+ [standardtoaster]
+!Wakeup from Sleep is Interruptible Frame 10+ [standardtoaster]
 ##############################################################
 .alias PSA_Off = 0x80540970
 CODE @ $80540970
@@ -938,7 +938,7 @@ CODE @ $80FB54F4
 }
 
 ##########################################################
-Footstool with Only Taunt + Fail Window v1.3 [Magus, ds22]
+!Footstool with Only Taunt + Fail Window v1.3 [Magus, ds22]
 ##########################################################
 * 02FC1528 00170002
 * 06FC1558 00000010

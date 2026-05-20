@@ -5,7 +5,7 @@
 # 9019D7D0 -> 80545B98
 # 9019D840 -> 80545BF0
 #####################################################################
-No Powershield Buffering and Powershield Reflect v4.1 [Shanus, Magus]
+!No Powershield Buffering and Powershield Reflect v4.1 [Shanus, Magus]
 #####################################################################
 .alias PSA_Off  = 0x80545928
 .alias PSA_Off2 = 0x80545A28

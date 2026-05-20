@@ -1,7 +1,7 @@
 # 9019FB40 -> 80540168
 # 9019FD00 -> 805401F8
 #############################################################
-Slow Turn is Able to Trigger a Fast Turn on 2nd Frame [Magus]
+!Slow Turn is Able to Trigger a Fast Turn on 2nd Frame [Magus]
 #############################################################
 .alias PSA_Off = 0x80540168
 CODE @ $80540168
@@ -34,7 +34,7 @@ CODE @ $80FAD204 # 80F9FC20 + D5E4
 }
 
 ###################################################
-Slow Turn Timer Used for JumpSquat and Fall [Magus]
+!Slow Turn Timer Used for JumpSquat and Fall [Magus]
 ###################################################
 .alias PSA_Off = 0x805401F8
 CODE @ $805401F8

@@ -1,6 +1,8 @@
 # Stracciatella Brawl Base
 An example repository for starting to mod Super Smash Brothers Brawl
 
+Stracciatella ice cream (gelato) is vanilla with fine strands of drizzled chocolate. This brawl is not a vanilla brawl, there are some behavioral differences, hence the fine strands of drizzled chocolate.
+
 ## How to Use
 Download this repository.
 
@@ -18,7 +20,7 @@ This boot.elf is compiled from this project by iGlitch: https://github.com/djpvs
 
 Repository comes with VSDSync, the preferred method of syncing your `sd_base` directory with your SD card.
 You can also use the `build.bat` or `build.ps1` scripts to automatically build all required gecko codes, then sync.
-There is a .vscode directory that allows you to CTRL-B to launch the `build.ps1` task if you are editing this repo in VS Code.
+There is a .vscode directory that allows you to CTRL-SHIFT-B to launch the `build.ps1` task if you are editing this repo in VS Code.
 
 ### BrawlInstaller Support
 
