@@ -1,5 +1,5 @@
 ########################################################################
-[P+Ex] SlotsEX Rewrite v1.0.3 [MarioDox, GerraRReal, QuickLava, Squidgy]
+[P+Ex] SlotsEX Rewrite v1.0.3 L-Load variant [MarioDox, GerraRReal, QuickLava, Squidgy, L-Load hijack by MarioDox]
 # v1.0.3 - Update muCharKind when SlotEx fighter is chosen with
 # Melee Random
 ########################################################################
@@ -43,8 +43,8 @@ Table:
 Table_Skip:
 .BA -> $806948C8                                    # Note: this address is typically in the range of the "exchangePoke3ToGmCharKind" function!
 .alias LocalMemoryAddrLoc = 0x806948C8              # We return early from that function with this code, so the remaining memory there is safe to use!
-.alias MaxCharCount = 128
-.alias TableLengthInBytes = 512
+.alias MaxCharCount = 242
+.alias TableLengthInBytes = 968
 .RESET
 .macro lwd(<reg>, <addr>)
 {
@@ -121,23 +121,23 @@ HOOK @ $80697040                # [0xE0 bytes into symbol "setCharKind/[muSelCha
 }
 
 # Handles Getting Coll Type!
-HOOK @ $80697B9C                # [0x94 bytes into symbol "getCollKind/[muSelCharPlayerArea]/mu_selchar_player_area_" @ 0x80697B08, Ghidra: $806A3438]
-{
-  subic r10, r0, 0x9                 # Subtract 9 from the case ID so that PT's case ID is now 0.
-  cmplwi r10, 0x3                    # \
-  bgt+ exit                          # / Then exit if the resulting value isn't between 0 and 3 (PT and the mons)
-
-  %lwd(r11, LocalMemoryAddrLoc)      # Grab the table address.
-  lwz r12, 0x1B8(r19)                # First, grab the active character slot...
-  rlwinm r12, r12, 2, 0, 29          # ... quadruple it to get the offset to the associated table entry...
-  add r11, r11, r12                  # ... and add it to the table address to get its address.
-
-  lbz r9, 0x00(r11)                  # Load the parent ID into r9...
-  lbzx r10, r11, r10                 # ... and the active sub-slot ID into r10!
-
-exit:
-  rlwinm r0, r0, 2, 0, 29            # Restore Original Instruction
-}
+#HOOK @ $80697B9C                # [0x94 bytes into symbol "getCollKind/[muSelCharPlayerArea]/mu_selchar_player_area_" @ 0x80697B08, Ghidra: $806A3438]
+#{
+#  subic r10, r0, 0x9                 # Subtract 9 from the case ID so that PT's case ID is now 0.
+#  cmplwi r10, 0x3                    # \
+#  bgt+ exit                          # / Then exit if the resulting value isn't between 0 and 3 (PT and the mons)
+#
+#  %lwd(r11, LocalMemoryAddrLoc)      # Grab the table address.
+#  lwz r12, 0x1B8(r19)                # First, grab the active character slot...
+#  rlwinm r12, r12, 2, 0, 29          # ... quadruple it to get the offset to the associated table entry...
+#  add r11, r11, r12                  # ... and add it to the table address to get its address.
+#
+#  lbz r9, 0x00(r11)                  # Load the parent ID into r9...
+#  lbzx r10, r11, r10                 # ... and the active sub-slot ID into r10!
+#
+#exit:
+#  rlwinm r0, r0, 2, 0, 29            # Restore Original Instruction
+#}
 op cmplw r4, r9     @ $80697FBC # \
 op cmplw r3, r10    @ $80697FCC # / Case 9:  PT Parent Slot
 op cmplw r4, r9     @ $8069802C # \
@@ -283,4 +283,74 @@ subSlotLoopHead:
 
   exit:
   li r4, 0  # original instruction
+}
+
+## L-Load hijack by MarioDox
+HOOK @ $80689b28                    # buttonProc/[muSelCharTask]
+{
+  lwz r0,0x54(r1)                   # gets pressed input for this frame
+  rlwinm. r12,r0,0,25,25            # isolate 6th bit, which is used for triggers, L is 0x40
+  beq- %END%
+
+  # checks if you're holding a coin, if so, gets the related port instead of your own
+  lwz r3,0xA0(r30)                  # current coin value
+  cmpwi r3,0x0
+  beq- getCurrentPort
+  lis r12,0x8069                    # \
+  ori r12,r12,0xE634                # | getCoinNo/[muSelCharCoin] 
+  mtctr r12                         # |
+  bctrl                             # /
+  rlwinm r0,r3,2,0,29               # \
+  add r3,r24,r0                     # | gets relative muSelCharPlayerArea of coin
+  lwz r28,0x44(r3)                  # /
+  b checkIndex
+
+getCurrentPort:
+  lwz r3,0x1B0(r26)                 # \ get muSelCharPlayerArea
+  rlwinm r3,r3,2,0,29               # |
+  add r3,r24,r3                     # |
+  lwz r28,0x44(r3)                  # /
+
+checkIndex:
+  lwz r4,0x1F0(r28)                 # gets poke3
+  cmplwi r4,0x3                     # can't go past max!
+  bge- resetPoke3
+  addi r4,r4,0x1
+  b checkIfPoke3
+resetPoke3:
+  li r4,0x0
+  b setPoke3
+checkIfPoke3:
+  %lwd(r11,LocalMemoryAddrLoc)      # access table
+  lwz r12,0x1B8(r28)                # get current char
+  rlwinm r12,r12,2,0,29             # quadruple to get its offset in table
+  add r11,r11,r12                   # add it get the full address
+  lbzx r12,r4,r11                   # get the subslot char of the char's entry in the table
+  cmplwi r12,0xFF                   # \ check if not set
+  beq- nullEntry                    # /
+  lbz r5,0x0(r11)                   # get base slot from the table's entry
+  cmplw r5,r12                      # \ check if identical
+  bne- setPoke3                     # /
+identicalEntry:
+  cmplwi r4,0x1                     # \ check upcoming poke3 index
+  ble- end                          # / if first entry, then it doesn't have L-Loads
+  li r4,0x0                         # alternatively, it's going back to 0, as it has no more alternates!
+  b setPoke3
+nullEntry:
+  cmplwi r4,0x1                     # \ check upcoming poke3 index
+  ble- end                          # / if first entry, then it doesn't have L-Loads
+setPoke3:
+  mr r3,r28
+  lis r12,0x8069                    # \
+  ori r12,r12,0x4A04                # | setPoke3/[muSelCharPlayerArea] 
+  mtctr r12                         # |
+  bctrl                             # /
+
+  mr r3,r28
+  lis r12,0x8069                    # \
+  ori r12,r12,0xA4DC                # | dispCharPicEffect/[muSelCharPlayerArea] 
+  mtctr r12                         # | we're cool like that, we need the flash
+  bctrl                             # /
+end:
+  lwz r0,0x54(r1)                   # original op
 }

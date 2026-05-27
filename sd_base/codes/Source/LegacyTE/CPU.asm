@@ -1,5 +1,5 @@
 #############################################
-[Legacy TE] Default CPU level is 9 v2 [codes]
+![Legacy TE] Default CPU level is 9 v2 [codes]
 #############################################
 HOOK @ $8004C8B4
 {

@@ -111,7 +111,7 @@ CODE @ $80FA1934
 	word 0x00070100; word PSA_Off2+0x78
 }
 ################################################################################
-!Electric Effects Mod, Intensity Based On KB, & Hitlag Overlay Fix v1.4 [camelot]
+Electric Effects Mod, Intensity Based On KB, & Hitlag Overlay Fix v1.4 [camelot]
 ################################################################################
 .alias PSA_Off  = 0x80540B18
 .alias PSA_Off2 = 0x80540A28  # MUST MATCH PSA_OFF2 IN FIRE CODE, ABOVE!!!
