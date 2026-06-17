@@ -121,23 +121,23 @@ HOOK @ $80697040                # [0xE0 bytes into symbol "setCharKind/[muSelCha
 }
 
 # Handles Getting Coll Type!
-#HOOK @ $80697B9C                # [0x94 bytes into symbol "getCollKind/[muSelCharPlayerArea]/mu_selchar_player_area_" @ 0x80697B08, Ghidra: $806A3438]
-#{
-#  subic r10, r0, 0x9                 # Subtract 9 from the case ID so that PT's case ID is now 0.
-#  cmplwi r10, 0x3                    # \
-#  bgt+ exit                          # / Then exit if the resulting value isn't between 0 and 3 (PT and the mons)
-#
-#  %lwd(r11, LocalMemoryAddrLoc)      # Grab the table address.
-#  lwz r12, 0x1B8(r19)                # First, grab the active character slot...
-#  rlwinm r12, r12, 2, 0, 29          # ... quadruple it to get the offset to the associated table entry...
-#  add r11, r11, r12                  # ... and add it to the table address to get its address.
-#
-#  lbz r9, 0x00(r11)                  # Load the parent ID into r9...
-#  lbzx r10, r11, r10                 # ... and the active sub-slot ID into r10!
-#
-#exit:
-#  rlwinm r0, r0, 2, 0, 29            # Restore Original Instruction
-#}
+HOOK @ $80697B9C                # [0x94 bytes into symbol "getCollKind/[muSelCharPlayerArea]/mu_selchar_player_area_" @ 0x80697B08, Ghidra: $806A3438]
+{
+  subic r10, r0, 0x9                 # Subtract 9 from the case ID so that PT's case ID is now 0.
+  cmplwi r10, 0x3                    # \
+  bgt+ exit                          # / Then exit if the resulting value isn't between 0 and 3 (PT and the mons)
+
+  %lwd(r11, LocalMemoryAddrLoc)      # Grab the table address.
+  lwz r12, 0x1B8(r19)                # First, grab the active character slot...
+  rlwinm r12, r12, 2, 0, 29          # ... quadruple it to get the offset to the associated table entry...
+  add r11, r11, r12                  # ... and add it to the table address to get its address.
+
+  lbz r9, 0x00(r11)                  # Load the parent ID into r9...
+  lbzx r10, r11, r10                 # ... and the active sub-slot ID into r10!
+
+exit:
+  rlwinm r0, r0, 2, 0, 29            # Restore Original Instruction
+}
 op cmplw r4, r9     @ $80697FBC # \
 op cmplw r3, r10    @ $80697FCC # / Case 9:  PT Parent Slot
 op cmplw r4, r9     @ $8069802C # \
